@@ -61,7 +61,7 @@ void SceneTessellation::run(Window& w)
     
     m_terrainVao.bind();
     // TODO
-    //glDrawArrays(, 0, m_terrainVerticesCount);
+    glDrawArrays(GL_PATCHES, 0, m_terrainVerticesCount);
 }
 
 void SceneTessellation::updateInput(Window& w)

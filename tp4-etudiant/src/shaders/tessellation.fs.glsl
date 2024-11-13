@@ -38,4 +38,5 @@ const float PATCH_EDGE_WIDTH = 0.5f;
 void main()
 {
 	// TODO
+    float edgeFactorUse = edgeFactor(attribIn.barycentricCoords, PATCH_EDGE_WIDTH);
 }

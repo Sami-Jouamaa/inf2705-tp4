@@ -31,4 +31,5 @@ const float PLANE_SIZE = 256.0f;
 void main()
 {
 	// TODO
+    // Will decide height of points
 }

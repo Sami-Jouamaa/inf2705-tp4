@@ -22,4 +22,9 @@ out ATTRIB_GS_OUT
 void main()
 {
     // TODO
+    // Which attribIn to take ?
+    attribOut.height = attribIn[0].height;
+    attribOut.texCoords = attribIn[0].texCoords;
+    attribOut.patchDistance = attribIn[0].patchDistance;
+    // attribOut.barycentricCoords
 }

@@ -14,6 +14,7 @@ const float MAX_DIST = 100.0f;
 void main()
 {
 	// TODO
+    // In charge of LOD.
 
     gl_in[0].gl_Position; // (0,0)
     gl_in[1].gl_Position; // (1,0)
