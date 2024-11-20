@@ -31,6 +31,7 @@ SceneTessellation::SceneTessellation(bool& isMouseMotionEnabled)
     generateMesh();
 
     // TODO
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
 }
 
 void SceneTessellation::run(Window& w)
@@ -57,7 +58,7 @@ void SceneTessellation::run(Window& w)
     glUniform1i(m_viewWireframeLocation, m_viewWireframe);
 
     // TODO: To remove, only for debug
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//GL_FILL
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);//GL_FILL
     
     m_terrainVao.bind();
     // TODO

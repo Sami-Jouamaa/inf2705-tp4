@@ -39,4 +39,5 @@ void main()
 {
 	// TODO
     float edgeFactorUse = edgeFactor(attribIn.barycentricCoords, PATCH_EDGE_WIDTH);
+    FragColor = vec4(0, 0, 0, 1);
 }

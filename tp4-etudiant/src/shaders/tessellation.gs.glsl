@@ -22,9 +22,16 @@ out ATTRIB_GS_OUT
 void main()
 {
     // TODO
-    // Which attribIn to take ?
-    attribOut.height = attribIn[0].height;
-    attribOut.texCoords = attribIn[0].texCoords;
-    attribOut.patchDistance = attribIn[0].patchDistance;
-    // attribOut.barycentricCoords
+
+    for (int i = 0 ; i < 3; i++)
+    {
+        gl_Position = gl_in[i].gl_Position;
+        attribOut.texCoords = attribIn[i].texCoords;
+        attribOut.height = attribIn[i].height;
+        attribOut.patchDistance = attribIn[i].patchDistance;
+        attribOut.barycentricCoords = vec3(1,1,1);
+        EmitVertex();
+    }
+
+    EndPrimitive();
 }
