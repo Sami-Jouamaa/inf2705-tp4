@@ -29,7 +29,7 @@ void main()
         attribOut.texCoords = attribIn[i].texCoords;
         attribOut.height = attribIn[i].height;
         attribOut.patchDistance = attribIn[i].patchDistance;
-        attribOut.barycentricCoords = vec3(1,1,1);
+        attribOut.barycentricCoords = vec3(gl_Position.x/attribIn[i].height, gl_Position.y/attribIn[i].height, gl_Position.z/attribIn[i].height);
         EmitVertex();
     }
     EndPrimitive();

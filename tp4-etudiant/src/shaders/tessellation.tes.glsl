@@ -45,7 +45,7 @@ void main()
     interpolation.y += percentage;
 
     gl_Position = mvp * interpolation;
-    attribOut.texCoords = vec2(2 * gl_TessCoord.x, 2 * gl_TessCoord.y);
-    attribOut.height = 32;
-    attribOut.patchDistance = vec4(gl_TessCoord.x, gl_TessCoord.y, 1 - gl_TessCoord.x, 1 - gl_TessCoord.y);
+    attribOut.texCoords = vec2(2 * gl_TessCoord.x, 2 * gl_TessCoord.y)/4;
+    attribOut.height = (texture2D.x + texture2D.y)/4;
+    attribOut.patchDistance = vec4(gl_TessCoord.x, 1 - gl_TessCoord.x, gl_TessCoord.y, 1-gl_TessCoord.y);
 }
