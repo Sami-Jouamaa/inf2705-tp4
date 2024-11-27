@@ -32,6 +32,5 @@ void main()
         attribOut.barycentricCoords = vec3(1,1,1);
         EmitVertex();
     }
-
     EndPrimitive();
 }

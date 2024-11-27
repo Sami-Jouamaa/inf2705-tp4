@@ -25,7 +25,7 @@ void main()
         gl_TessLevelOuter[3] = 16;
 
         gl_TessLevelInner[0] = 16;
-        gl_TessLevelOuter[1] = 16;   
+        gl_TessLevelInner[1] = 16;
     }
 
     // gl_in[0].gl_Position; // (0,0)
