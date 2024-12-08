@@ -40,12 +40,15 @@ void main()
     vec4 p3 = gl_in[3].gl_Position;
     vec4 interpolation = interpole(p0, p1, p2, p3);
 
-    vec4 texture2D = texture(heighmapSampler, vec2(0, 0));
-    float percentage = (interpolation.x * interpolation.y * interpolation.z)/256;
-    interpolation.y += percentage;
+    vec2 texcoord = vec2(interpolation.x, interpolation.y)/(PLANE_SIZE + 0.5);
+    texcoord *= 2.0;
+
+    float height = texture(heighmapSampler, texcoord).x;
+    float heightAdjusted = height * 64.0 - 32.0;
+    interpolation.y += heightAdjusted;
 
     gl_Position = mvp * interpolation;
-    attribOut.texCoords = vec2(2 * gl_TessCoord.x, 2 * gl_TessCoord.y)/4;
-    attribOut.height = (texture2D.x + texture2D.y)/4;
+    attribOut.texCoords = texcoord;
+    attribOut.height = heightAdjusted;
     attribOut.patchDistance = vec4(gl_TessCoord.x, 1 - gl_TessCoord.x, gl_TessCoord.y, 1-gl_TessCoord.y);
 }

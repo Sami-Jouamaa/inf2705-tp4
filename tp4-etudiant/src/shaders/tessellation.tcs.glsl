@@ -15,17 +15,23 @@ void main()
 {
 	// TODO
     // In charge of LOD.
+    vec3 patchCenterDistance = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz + gl_in[3].gl_Position.xyz)/4.0;
+    vec3 vectorDistance = gl_in[gl_InvocationID].gl_Position.xyz - patchCenterDistance;
+
+    float distance = sqrt(pow(vectorDistance.x, 2) + pow(vectorDistance.y, 2) + pow(vectorDistance.z, 2));
+    float tessFactor = mix(MIN_TESS, MAX_TESS, clamp((distance - MIN_DIST)/(MAX_DIST - MIN_DIST), 0.0, 1.0));
+    
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 
     if(gl_InvocationID == 0)
     {
-        gl_TessLevelOuter[0] = 16;
-        gl_TessLevelOuter[1] = 16;
-        gl_TessLevelOuter[2] = 16;
-        gl_TessLevelOuter[3] = 16;
+        gl_TessLevelOuter[0] = tessFactor;
+        gl_TessLevelOuter[1] = tessFactor;
+        gl_TessLevelOuter[2] = tessFactor;
+        gl_TessLevelOuter[3] = tessFactor;
 
-        gl_TessLevelInner[0] = 16;
-        gl_TessLevelInner[1] = 16;
+        gl_TessLevelInner[0] = tessFactor;
+        gl_TessLevelInner[1] = tessFactor;
     }
 
     // gl_in[0].gl_Position; // (0,0)
