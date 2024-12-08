@@ -106,7 +106,7 @@ void SceneTessellation::generateMesh()
 {
     const int N_DIVISIONS = 9;
     const int N_PRIMITIVES = N_DIVISIONS + 1;
-    const int N_COMPONENTS = 3;
+    const int N_COMPONENTS = 5;
     const int N_PER_PRIMITIVE = 4;
     const int DATA_SIZE = N_PRIMITIVES * N_PRIMITIVES * N_PER_PRIMITIVE * N_COMPONENTS;
     const GLfloat SIZE = 256.0f;
@@ -127,22 +127,32 @@ void SceneTessellation::generateMesh()
         planeData[i++] = x * FACTOR + OFFSET;
         planeData[i++] = -1.0f;
         planeData[i++] = y * FACTOR + OFFSET;
+        planeData[i++] = x / (float)N_PRIMITIVES; // u texture coordinate
+        planeData[i++] = y / (float)N_PRIMITIVES; // v texture coordinate
 
         planeData[i++] = x * FACTOR + OFFSET;
         planeData[i++] = -1.0f;
         planeData[i++] = Y * FACTOR + OFFSET;
+        planeData[i++] = x / (float)N_PRIMITIVES;
+        planeData[i++] = (y + 1) / (float)N_PRIMITIVES;
 
         planeData[i++] = X * FACTOR + OFFSET;
         planeData[i++] = -1.0f;
         planeData[i++] = Y * FACTOR + OFFSET;
+        planeData[i++] = (x + 1) / (float)N_PRIMITIVES;
+        planeData[i++] = (y + 1) / (float)N_PRIMITIVES;
+        
 
         planeData[i++] = X * FACTOR + OFFSET;
         planeData[i++] = -1.0f;
         planeData[i++] = y * FACTOR + OFFSET;
+        planeData[i++] = (x + 1) / (float)N_PRIMITIVES;
+        planeData[i++] = y / (float)N_PRIMITIVES;
     }
 
     m_terrainBuffer.allocate(GL_ARRAY_BUFFER, sizeof(planeData), planeData, GL_STATIC_DRAW);
     m_terrainVao.specifyAttribute(m_terrainBuffer, 0, 3, 0, 0);
+    m_terrainVao.specifyAttribute(m_terrainBuffer, 1, 2, sizeof(GLfloat) * N_COMPONENTS, sizeof(GLfloat) * 3);  // Texture coordinates
 }
 
 void SceneTessellation::initializeShader()
