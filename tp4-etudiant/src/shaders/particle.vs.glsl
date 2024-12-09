@@ -19,5 +19,5 @@ void main()
     // TODO
     attribOut.color = color;
     attribOut.size = size;
-    gl_Position = vec4(position, 1);
+    gl_Position = vec4(modelView * position, 1);
 }
