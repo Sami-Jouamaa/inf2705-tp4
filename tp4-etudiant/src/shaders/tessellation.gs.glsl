@@ -26,7 +26,7 @@ void main()
     vec3 p0 = gl_in[0].gl_Position.xyz;
     vec3 p1 = gl_in[1].gl_Position.xyz;
     vec3 p2 = gl_in[2].gl_Position.xyz;
-    float triangleArea = cross(p1 - p0, p2 - p0).z;
+    float triangleArea = length(cross(p1 - p0, p2 - p0));
 
     for (int i = 0; i < 3; i++) 
     {
@@ -34,11 +34,11 @@ void main()
         vec3 v1 = p2 - p1;
         vec3 v2 = gl_in[i].gl_Position.xyz - p1;
 
-        float u = cross(v1, v2).z/triangleArea;
-        float v = cross(v2, v0).z/triangleArea;
+        float u = length(cross(v1, v2)) / triangleArea;
+        float v = length(cross(v2, v0)) / triangleArea;
         float w = 1.0 - u - v;
 
-        attribOut.barycentricCoords = vec3(u, v, w);
+        attribOut.barycentricCoords = clamp(vec3(u, v, w), 0.0, 1.0);
         attribOut.texCoords = attribIn[i].texCoords;
         attribOut.height = attribIn[i].height;
         attribOut.patchDistance = attribIn[i].patchDistance;
