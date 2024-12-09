@@ -62,8 +62,14 @@ void main()
         textureMix = texture(snowSampler, attribIn.texCoords);
     }
     if (viewWireframe) {
-        vec3 finalColor = mix(textureMix.rgb, PATCH_EDGE_COLOR, edgeFactorUse);
-        FragColor = vec4(vec3(finalColor), 1.0);
+        bool patchEdge = (patchDistance.x == 0.0 || patchDistance.y == 0.0 || patchDistance.z == 0.0 || patchDistance.w == 0.0);
+        if (patchEdge) {
+            FragColor = vec4(PATCH_EDGE_COLOR, 1.0);
+        } else if (edgeFactorUse) {
+            FragColor = vec4(WIREFRAME_COLOR, 1.0);
+        } else {
+            FragColor = vec4(textureMix.xyz, 1.0);
+        }
     } else {
         FragColor = vec4(textureMix.xyz, 1.0);
     }
