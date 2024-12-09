@@ -59,5 +59,42 @@ const vec3 ACCELERATION = vec3(0.0f, 0.1f, 0.0f);
 void main()
 {
     // TODO
-    
+    float normalizedLifeTime = 1.0 - (timeToLive/MAX_TIME_TO_LIVE);
+    if(timeToLive <= 0.0f)
+    {
+        positionMod = randomInCircle(INITIAL_RADIUS, INITIAL_HEIGHT);
+
+        vec3 velocityDirection = randomInCircle(FINAL_RADIUS, FINAL_HEIGHT);
+
+        float speed = INITIAL_SPEED_MIN + random() * (INITIAL_SPEED_MAX - INITIAL_SPEED_MIN);
+        velocityMod = normalize(velocityDirection) * speed;
+
+        timeToLiveMod = 1.7f * random() * 0.3f;
+    }
+    else
+    {
+        positionMod = position + velocity * dt;
+        velocityMod = velocity + ACCELERATION * dt;
+
+        timeToLiveMod = timeToLive - dt;
+    }
+
+    if (normalizedLifeTime <= 0.25)
+    {
+        colorMod = vec4(YELLOW_COLOR, smoothstep(0.0f, 2.0f, normalizedLifeTime) * (1.0 - smoothstep(0.0f, 2.0f, normalizedLifeTime)));
+    }
+    else if (normalizedLifeTime <= 0.5)
+    {
+        colorMod =  vec4(ORANGE_COLOR, 1.0f);
+    }
+    else if (normalizedLifeTime <= 1.0)
+    {
+        colorMod = vec4(DARK_RED_COLOR, smoothstep(0.5f, 1.0f, normalizedLifeTime) * (1.0 - smoothstep(0.5f, 1.0f, normalizedLifeTime)));
+    }
+
+    float sizeFactor = 1.0 + 0.5 * normalizedLifeTime;
+    sizeMod = vec2(size.x * sizeFactor, size.y);
+
+    float alphaMod = smoothstep(0.0f, 2.0f, normalizedLifeTime) * (1.0 - smoothstep(0.0f, 2.0f, normalizedLifeTime));
+    colorMod.a = alphaMod;
 }
