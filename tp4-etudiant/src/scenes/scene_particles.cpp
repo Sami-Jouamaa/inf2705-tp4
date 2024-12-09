@@ -147,7 +147,7 @@ void SceneParticles::run(Window& w)
     Particle* particleData = new Particle[m_nParticles];
     glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_nParticles * sizeof(Particle), particleData);
 
-    glBundBuffer(m_vbo[0]);
+    glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, m_vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), particleData, GL_DYNAMIC_DRAW);
 
 
