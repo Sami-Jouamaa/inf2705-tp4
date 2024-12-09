@@ -53,6 +53,8 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
 
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
 
+
+    m_transformFeedbackShaderProgram.use();
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
 
     glEnableVertexAttribArray(0);
@@ -70,6 +72,23 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, timeToLive));
 
+    m_particuleShaderProgram.use();
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, position));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, velocity));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, size));
+
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, timeToLive));
 }
 
 SceneParticles::~SceneParticles()
@@ -98,9 +117,16 @@ void SceneParticles::run(Window& w)
     glUniform1f(m_timeLocationTransformFeedback, time);
     glUniform1f(m_dtLocationTransformFeedback, dt);
     
-    // TODO: buffer binding
-    // TODO: update particles
-    // TODO: swap buffers
+    glBindVertexArray(m_vao);
+    glEnable(GL_RASTERIZER_DISCARD);
+    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
+    glBeginTransformFeedback(GL_POINTS);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
+
+    glEndTransformFeedback();
+    glDisable(GL_RASTERIZER_DISCARD); // Re-enable rendering
+
 
     m_particuleShaderProgram.use();
     m_flameTexture.use(0);
