@@ -16,6 +16,20 @@
 static const unsigned int MAX_N_PARTICULES = 10000;
 static Particle particles[MAX_N_PARTICULES] = { {{0,0,0},{0,0,0},{0,0,0,0}, {0,0},0} };
 
+void initializeParticles() {
+    for (unsigned int i = 0; i < MAX_N_PARTICULES; ++i) {
+        particles[i].position = glm::vec3(0.0f);
+        particles[i].velocity = glm::vec3(
+            (float(rand()) / RAND_MAX - 0.5f) * 2.0f,
+            (float(rand()) / RAND_MAX) * 2.0f,
+            (float(rand()) / RAND_MAX - 0.5f) * 2.0f
+        );
+        particles[i].color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
+        particles[i].size = glm::vec2(1.0f);               
+        particles[i].timeToLive = float(rand()) / RAND_MAX * 5.0f;
+    }
+}
+
 SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
 : Scene()
 , m_isMouseMotionEnabled(isMouseMotionEnabled)
@@ -97,20 +111,6 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
 SceneParticles::~SceneParticles()
 {
     // TODO
-}
-
-void initializeParticles() {
-    for (unsigned int i = 0; i < MAX_N_PARTICULES; ++i) {
-        particles[i].position = glm::vec3(0.0f);
-        particles[i].velocity = glm::vec3(
-            (float(rand()) / RAND_MAX - 0.5f) * 2.0f,
-            (float(rand()) / RAND_MAX) * 2.0f,
-            (float(rand()) / RAND_MAX - 0.5f) * 2.0f
-        );
-        particles[i].color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
-        particles[i].size = glm::vec2(1.0f);               
-        particles[i].timeToLive = float(rand()) / RAND_MAX * 5.0f;
-    }
 }
 
 void SceneParticles::run(Window& w)
