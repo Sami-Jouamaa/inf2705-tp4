@@ -22,6 +22,13 @@ float edgeFactor(vec3 barycentricCoords, float width)
     return 1.0 - min(min(f.x, f.y), f.z);
 }
 
+float edgeFactorPatch(vec4 barycentricCoords, float width)
+{
+    vec4 d = fwidth(barycentricCoords);      
+    vec4 f = step(d * width, barycentricCoords); 
+    return 1.0 - min(min(min(f.x, f.y), f.z), f.w);
+}
+
 
 const vec3 WIREFRAME_COLOR = vec3(0.5f);
 const vec3 PATCH_EDGE_COLOR = vec3(1.0f, 0.0f, 0.0f);
@@ -32,7 +39,6 @@ const float PATCH_EDGE_WIDTH = 0.5f;
 void main()
 {
 	// TODO
-    float edgeFactorUse = edgeFactor(attribIn.barycentricCoords, PATCH_EDGE_WIDTH);
     FragColor = vec4(0, 0, 0, 1);
     float factor;
     vec4 textureMix;
@@ -62,15 +68,10 @@ void main()
         textureMix = texture(snowSampler, attribIn.texCoords);
     }
     if (viewWireframe) {
-        vec4 patchDistance = attribIn.patchDistance;
-        bool patchEdge = (patchDistance.x == 0.0 || patchDistance.y == 0.0 || patchDistance.z == 0.0 || patchDistance.w == 0.0);
-        if (patchEdge) {
-            FragColor = vec4(PATCH_EDGE_COLOR, 1.0);
-        } else if (edgeFactorUse == 1.0) {
-            FragColor = vec4(WIREFRAME_COLOR, 1.0);
-        } else {
-            FragColor = vec4(textureMix.xyz, 1.0);
-        }
+        float edgeFactorUse = edgeFactor(attribIn.barycentricCoords, WIREFRAME_WIDTH);
+        float patchEdgeFactorUse = edgeFactorPatch(attribIn.patchDistance, PATCH_EDGE_WIDTH);
+        vec4 finalColor = vec4(mix(textureMix.xyz, WIREFRAME_COLOR, edgeFactorUse), 1);
+        FragColor = vec4(mix(finalColor.xyz, PATCH_EDGE_COLOR, patchEdgeFactorUse), 1);
     } else {
         FragColor = vec4(textureMix.xyz, 1.0);
     }

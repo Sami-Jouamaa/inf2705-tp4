@@ -13,7 +13,6 @@ in ATTRIB_GS_OUT
 
 void main()
 {
-    // TODO
     if (attribIn.color.ALPHA < 0.5)
     {
         discard;
