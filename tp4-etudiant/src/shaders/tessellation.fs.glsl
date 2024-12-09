@@ -66,7 +66,7 @@ void main()
         bool patchEdge = (patchDistance.x == 0.0 || patchDistance.y == 0.0 || patchDistance.z == 0.0 || patchDistance.w == 0.0);
         if (patchEdge) {
             FragColor = vec4(PATCH_EDGE_COLOR, 1.0);
-        } else if (edgeFactorUse) {
+        } else if (edgeFactorUse == 1.0) {
             FragColor = vec4(WIREFRAME_COLOR, 1.0);
         } else {
             FragColor = vec4(textureMix.xyz, 1.0);
