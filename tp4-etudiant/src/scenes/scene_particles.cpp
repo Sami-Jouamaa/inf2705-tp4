@@ -38,8 +38,38 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
     initializeTexture();
 
     glEnable(GL_PROGRAM_POINT_SIZE);
-    
-    // TODO
+
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+
+    glGenTransformFeedbacks(1, &m_tfo);
+    glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
+
+    glGenBuffers(2, m_vbo);
+    for (int i = 0; i < 2; i++) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_vbo[i]);
+        glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), nullptr, GL_DYNAMIC_DRAW);
+    } 
+
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, position));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, velocity));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, size));
+
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, timeToLive));
+
 }
 
 SceneParticles::~SceneParticles()
@@ -136,14 +166,20 @@ void SceneParticles::initializeShader()
         m_projectionLocationParticle = m_particuleShaderProgram.getUniformLoc("projection");
     }
     
-    // Transform feedback shader
     {
         std::string vertexCode = readFile("shaders/transformFeedback.vs.glsl");
 
         ShaderObject vertex(GL_VERTEX_SHADER, vertexCode.c_str());
         m_transformFeedbackShaderProgram.attachShaderObject(vertex);
 
-        // TODO
+        const char* varyings[] = {
+            "positionMod",
+            "velocityMod",
+            "colorMod",
+            "sizeMod",
+            "timeToLiveMod"
+        };
+        setTransformFeedbackVaryings(varyings, 5, GL_INTERLEAVED_ATTRIBS);
         
         m_transformFeedbackShaderProgram.link();
 
