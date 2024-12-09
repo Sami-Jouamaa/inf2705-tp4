@@ -133,16 +133,23 @@ void SceneParticles::run(Window& w)
     m_transformFeedbackShaderProgram.use();
     glUniform1f(m_timeLocationTransformFeedback, time);
     glUniform1f(m_dtLocationTransformFeedback, dt);
-    
     glBindVertexArray(m_vao);
     glEnable(GL_RASTERIZER_DISCARD);
     glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
     glBeginTransformFeedback(GL_POINTS);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
     glDrawArrays(GL_POINTS, 0, m_nParticles);
-
     glEndTransformFeedback();
-    glDisable(GL_RASTERIZER_DISCARD); // Re-enable rendering
+    glDisable(GL_RASTERIZER_DISCARD);
+    glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, m_vbo[1]);
+    
+    glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, m_vbo[1]);
+    Particle* particleData = new Particle[m_nParticles];
+    glGetBufferSubData(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_nParticles * sizeof(Particle), particleData);
+
+    glBundBuffer(m_vbo[0]);
+    glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), particleData, GL_DYNAMIC_DRAW);
+
 
 
     m_particuleShaderProgram.use();
@@ -151,7 +158,11 @@ void SceneParticles::run(Window& w)
     glUniformMatrix4fv(m_modelViewLocationParticle, 1, GL_FALSE, &modelView[0][0]);
     glUniformMatrix4fv(m_projectionLocationParticle, 1, GL_FALSE, &projPersp[0][0]);
 
-    // TODO: buffer binding
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
+    glDrawArrays(GL_POINTS, 0, m_nParticles);
+
     // TODO: Draw particles without depth write and with blending
 
     if (m_cumulativeTime > 1.0f / 60.0f)
