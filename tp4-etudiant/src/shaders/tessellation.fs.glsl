@@ -37,22 +37,22 @@ void main()
     float factor;
     vec4 textureMix;
 
-    if (attribIn.height < -10.0)
+    if (attribIn.height < 0.3)
     {
         textureMix = texture(sandSampler, attribIn.texCoords);
     }
-    else if (attribIn.height < -8.0)
+    else if (attribIn.height < 0.35)
     {
-        factor = smoothstep(-10.0, -8.0, attribIn.height);
+        factor = smoothstep(0.3, 0.35, attribIn.height);
         vec4 sand = texture(sandSampler, attribIn.texCoords);
         vec4 grass = texture(groundSampler, attribIn.texCoords);
         textureMix = mix(sand, grass, factor);
-    } else if (attribIn.height < 6.0) {
+    } else if (attribIn.height < 0.6) {
         textureMix = texture(groundSampler, attribIn.texCoords);
     }
-    else if (attribIn.height < 10.0) 
+    else if (attribIn.height < 0.65) 
     {
-        factor = smoothstep(6.0, 10.0, attribIn.height);
+        factor = smoothstep(0.6, 0.65, attribIn.height);
         vec4 grass = texture(groundSampler, attribIn.texCoords);
         vec4 snow = texture(snowSampler, attribIn.texCoords);
         textureMix = mix(grass, snow, factor);

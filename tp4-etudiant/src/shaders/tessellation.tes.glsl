@@ -48,6 +48,6 @@ void main()
 
     gl_Position = mvp * interpolation;
     attribOut.texCoords = texcoord;
-    attribOut.height = heightAdjusted;
+    attribOut.height = height;
     attribOut.patchDistance = vec4(gl_TessCoord.x, 1 - gl_TessCoord.x, gl_TessCoord.y, 1-gl_TessCoord.y);
 }
