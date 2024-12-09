@@ -63,11 +63,7 @@ void main()
     }
     if (viewWireframe) {
         vec4 patchDistance = attribIn.patchDistance;
-        const float EPSILON = 1e-6; // Small value for comparison
-        bool patchEdge = (abs(patchDistance.x) < EPSILON ||
-                  abs(patchDistance.y) < EPSILON ||
-                  abs(patchDistance.z) < EPSILON ||
-                  abs(patchDistance.w) < EPSILON);
+        bool patchEdge = (patchDistance.x == 0.0 || patchDistance.y == 0.0 || patchDistance.z == 0.0 || patchDistance.w == 0.0);
         if (patchEdge) {
             FragColor = vec4(PATCH_EDGE_COLOR, 1.0);
         } else if (edgeFactorUse == 1.0) {
