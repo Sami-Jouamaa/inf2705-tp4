@@ -14,10 +14,10 @@ in ATTRIB_GS_OUT
 void main()
 {
     // TODO
-    if (attribIn.color.ALPHA < 0.5)
+    if (attribIn.color.a < 0.5)
     {
         discard;
     }
-    vec2 outTexture = texture(textureSampler, attribIn.texCoords);
-    FragColor = mix(attribIn.color, outTexture);
+    vec2 outTexture = vec2(texture(textureSampler, attribIn.texCoords));
+    FragColor = attribIn.color;
 }
