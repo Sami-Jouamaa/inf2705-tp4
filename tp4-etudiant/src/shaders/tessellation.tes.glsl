@@ -40,7 +40,7 @@ void main()
     vec4 p3 = gl_in[3].gl_Position;
     vec4 interpolation = interpole(p0, p1, p2, p3);
 
-    vec2 texcoord = vec2(interpolation.x, interpolation.z)/(PLANE_SIZE);
+vec2 texcoord = (vec2(interpolation.x, interpolation.z) + vec2(PLANE_SIZE / 2.0)) / PLANE_SIZE;
 
     float height = texture(heighmapSampler, texcoord).r;
     float heightAdjusted = height * 64.0 - 32.0;

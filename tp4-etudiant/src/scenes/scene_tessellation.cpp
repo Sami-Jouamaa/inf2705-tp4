@@ -169,7 +169,7 @@ void SceneTessellation::initializeShader()
 
 void SceneTessellation::initializeTexture()
 {
-    m_heightmapTexture.setWrap(GL_REPEAT);
+    m_heightmapTexture.setWrap(GL_CLAMP_TO_EDGE);
 	m_heightmapTexture.setFiltering(GL_LINEAR);
     
     m_grassTexture.setWrap(GL_REPEAT);
