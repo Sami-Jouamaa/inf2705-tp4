@@ -149,9 +149,8 @@ void SceneParticles::run(Window& w)
 
     glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, m_vbo[0]);
     glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), particleData, GL_DYNAMIC_DRAW);
-
-
-
+    delete[] particleData;
+    
     m_particuleShaderProgram.use();
     m_flameTexture.use(0);
     
