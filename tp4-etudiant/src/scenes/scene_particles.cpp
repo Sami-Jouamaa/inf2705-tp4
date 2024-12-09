@@ -233,7 +233,7 @@ void SceneParticles::initializeShader()
             "sizeMod",
             "timeToLiveMod"
         };
-        setTransformFeedbackVaryings(varyings, 5, GL_INTERLEAVED_ATTRIBS);
+        m_transformFeedbackShaderProgram.setTransformFeedbackVaryings(varyings, 5, GL_INTERLEAVED_ATTRIBS);
         
         m_transformFeedbackShaderProgram.link();
 
