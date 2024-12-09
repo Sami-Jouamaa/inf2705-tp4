@@ -19,5 +19,5 @@ void main()
         discard;
     }
     vec2 outTexture = vec2(texture(textureSampler, attribIn.texCoords));
-    FragColor = attribIn.color;
+    FragColor = attribIn.color * vec4(outTexture, 0.0, 1.0);
 }

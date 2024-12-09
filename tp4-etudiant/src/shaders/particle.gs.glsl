@@ -3,7 +3,6 @@
 layout(points) in;
 layout(triangle_strip, max_vertices = 4) out;
 
-
 in ATTRIB_VS_OUT
 {
     vec4 color;
@@ -26,7 +25,7 @@ void main()
     vec3 halfwayPoint = vec3(attribIn[0].size.x * 0.5, attribIn[0].size.x * 0.5, 0.0);
 
     vec3 corners[4];
-    corners[0] = position + vec3(-halfwayPoint.x, -halfwayPoint.y, 0.0); // (0,0) kinda
+    corners[0] = position + vec3(-halfwayPoint.x, -halfwayPoint.y, 0.0); // (0,0)
     corners[1] = position + vec3(-halfwayPoint.x, halfwayPoint.y, 0.0); // (0, 1)
     corners[2] = position + vec3(halfwayPoint.x, -halfwayPoint.y, 0.0); // (1,0)
     corners[3] = position + vec3(halfwayPoint.x, halfwayPoint.y, 0.0); // (1,1)
