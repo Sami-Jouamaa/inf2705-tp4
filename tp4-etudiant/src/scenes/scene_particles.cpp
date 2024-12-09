@@ -46,10 +46,13 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
     glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, m_tfo);
 
     glGenBuffers(2, m_vbo);
-    for (int i = 0; i < 2; i++) {
-        glBindBuffer(GL_ARRAY_BUFFER, m_vbo[i]);
-        glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), nullptr, GL_DYNAMIC_DRAW);
-    } 
+
+    initializeParticles();
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[0]);
+    glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), particles, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]);
+    glBufferData(GL_ARRAY_BUFFER, m_nMaxParticles * sizeof(Particle), nullptr, GL_DYNAMIC_DRAW);
 
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, m_vbo[1]);
 
@@ -94,6 +97,20 @@ SceneParticles::SceneParticles(bool& isMouseMotionEnabled)
 SceneParticles::~SceneParticles()
 {
     // TODO
+}
+
+void initializeParticles() {
+    for (unsigned int i = 0; i < MAX_N_PARTICULES; ++i) {
+        particles[i].position = glm::vec3(0.0f);
+        particles[i].velocity = glm::vec3(
+            (float(rand()) / RAND_MAX - 0.5f) * 2.0f,
+            (float(rand()) / RAND_MAX) * 2.0f,
+            (float(rand()) / RAND_MAX - 0.5f) * 2.0f
+        );
+        particles[i].color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
+        particles[i].size = glm::vec2(1.0f);               
+        particles[i].timeToLive = float(rand()) / RAND_MAX * 5.0f;
+    }
 }
 
 void SceneParticles::run(Window& w)
