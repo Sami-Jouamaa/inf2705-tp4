@@ -62,7 +62,7 @@ void main()
         textureMix = texture(snowSampler, attribIn.texCoords);
     }
     if (viewWireframe) {
-        vec4 patchDistance = AttribsIn.patchDistance;
+        vec4 patchDistance = AttribIn.patchDistance;
         bool patchEdge = (patchDistance.x == 0.0 || patchDistance.y == 0.0 || patchDistance.z == 0.0 || patchDistance.w == 0.0);
         if (patchEdge) {
             FragColor = vec4(PATCH_EDGE_COLOR, 1.0);
